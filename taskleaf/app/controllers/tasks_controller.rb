@@ -12,6 +12,13 @@ class TasksController < ApplicationController
   end
 
   def edit
+    @task = Task.find(params[:id])
+  end
+
+  def update
+    task = Task.find(params[:id])
+    task.update!(task_params)
+    redirect_to tasks_url, notice: "task #{task.name} updated"
   end
 
   def create
@@ -20,6 +27,11 @@ class TasksController < ApplicationController
     redirect_to tasks_url, notice: "task #{task.name} created"
   end
   
+  def destroy
+    task = Task.find(params[:id])
+    task.destroy
+    redirect_to tasks_url, notice: "task  #{task.name} deleted"
+  end
   private
 
   def task_params
