@@ -22,9 +22,13 @@ class TasksController < ApplicationController
   end
 
   def create
-    task = Task.new(task_params)
-    task.save!
-    redirect_to tasks_url, notice: "task #{task.name} created"
+    @task = Task.new(task_params)
+
+    if @task.save
+      redirect_to tasks_url, notice: "task #{@task.name} created"
+    else
+      render :new
+    end
   end
   
   def destroy
