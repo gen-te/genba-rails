@@ -1,4 +1,5 @@
 class SessionsController < ApplicationController
+  skip_before_action :login_required
   def new
   end
 
@@ -9,6 +10,11 @@ class SessionsController < ApplicationController
         session[:user_id] = user.id
         redirect_to root_url, notice: 'ログインしました'
     end
+  end
+
+  def destroy
+    reset_session
+    redirect_to root_url, notice:'ログアウトしました'
   end
 
   private 
