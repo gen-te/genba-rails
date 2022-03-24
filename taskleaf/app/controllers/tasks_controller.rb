@@ -1,10 +1,11 @@
 class TasksController < ApplicationController
+  before_action :set_task, only: [:show, :edit, :update, :destroy]
+  
   def index
-    @task = current_user.tasks
+    @tasks = current_user.tasks.order(created_at: :desc)
   end
 
   def show
-    @task = current_user.tasks.find(params[:id])
   end
 
   def new
@@ -12,11 +13,9 @@ class TasksController < ApplicationController
   end
 
   def edit
-    @task = current_user.tasks.find(params[:id])
   end
 
   def update
-    task = current_user.tasks.find(params[:id])
     task.update!(task_params)
     redirect_to tasks_url, notice: "task #{task.name} updated"
   end
@@ -32,13 +31,16 @@ class TasksController < ApplicationController
   end
   
   def destroy
-    task = current_user.tasks.find(params[:id])
-    task.destroy
+    @task.destroy
     redirect_to tasks_url, notice: "task  #{task.name} deleted"
   end
   private
 
   def task_params
     params.require(:task).permit(:name, :description)
+  end
+
+  def set_task
+    @task = current_user.tasks.find(params[:id])
   end
 end
