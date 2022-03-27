@@ -7,14 +7,16 @@ describe 'タスク管理機能', type: :system do
             user_a = FactoryBot.create(:user, name: 'UserA', email: 'a@example.com')
             # user A のタスク作成
             FactoryBot.create(:task, name: 'first task', user: user_a)
+
+            # user A login
+            visit login_path
+            fill_in 'email', with: 'a@example.com'
+            fill_in 'password', with: 'password'
+            click_button 'ログイン'
+            
         end
         context 'User A ログインしている時' do
             before do
-                # user A login
-                visit login_path
-                fill_in 'email', with: 'a@example.com'
-                fill_in 'password', with: 'password'
-                click_button 'ログイン'
             end
 
             it 'User Aが作成したタスクが表示される' do
